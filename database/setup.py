@@ -3,6 +3,10 @@ from .connection import get_db_connection
 def create_tables():
     conn = get_db_connection()
     cursor = conn.cursor()
+
+    cursor.execute('''
+            DROP TABLE IF EXISTS authors
+        ''')
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS authors (
@@ -10,6 +14,10 @@ def create_tables():
             name TEXT NOT NULL
         )
     ''')
+
+    cursor.execute('''
+            DROP TABLE IF EXISTS magazines
+        ''')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS magazines (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,6 +25,10 @@ def create_tables():
             category TEXT NOT NULL
         )
     ''')
+
+    cursor.execute('''
+            DROP TABLE IF EXISTS articles
+        ''')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS articles (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
