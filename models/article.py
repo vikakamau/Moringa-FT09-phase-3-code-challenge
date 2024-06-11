@@ -52,10 +52,10 @@ class Article:
             WHERE articles.id = ?
         ''', (self.id,))
         
-        author_row = cursor.fetchone()
+        author = cursor.fetchone()
         conn.close()
 
-        return author_row
+        return author
     
     def get_magazine(self):
         conn = get_db_connection()
@@ -68,7 +68,7 @@ class Article:
             WHERE articles.id = ?
         ''', (self.id,))
         
-        magazine_row = cursor.fetchone()
+        magazine = cursor.fetchone()
         conn.close()
 
-        return magazine_row
+        return magazine

@@ -6,6 +6,8 @@ class Magazine:
         self.id = id
         self.name = name
         self.category = category
+        assert len(name)>= 2 and len(name)<=16
+
 
     def __repr__(self):
         return f'<Magazine {self.name}>'
@@ -13,13 +15,8 @@ class Magazine:
     def get_name(self):
         return self._name
 
-    def set_name(self, name):
-        if type(name) != str:
-            return 
-        if len(name) < 2 or len(name) > 16:
-            return  
+    def set_name(self, name: str):
         self._name = name
-    
     name = property(get_name, set_name)
     
     def get_category(self):
@@ -54,10 +51,10 @@ class Magazine:
         ''', (name, category))
         
         conn.commit()
-        magazine_id = cursor.lastrowid
+        magazines_id = cursor.lastrowid
         conn.close()
         
-        return cls(magazine_id, name, category)
+        return cls(magazines_id, name, category)
 
     @classmethod
     def get_by_id(cls, magazine_id):
@@ -68,11 +65,11 @@ class Magazine:
             SELECT id, name, category FROM magazines WHERE id = ?
         ''', (magazine_id,))
         
-        row = cursor.fetchone()
+        fetch = cursor.fetchone()
         conn.close()
         
-        if row:
-            return cls(row['id'], row['name'], row['category'])
+        if fetch:
+            return cls(fetch['id'], fetch['name'], fetch['category'])
         else:
             return None
         
@@ -85,10 +82,10 @@ class Magazine:
             WHERE articles.magazine_id = ?
         ''', (self.id,))
 
-        articles_rows = cursor.fetchall()
+        articles = cursor.fetchall()
         conn.close()
 
-        return articles_rows
+        return articles
     
     def contributors(self):
         conn = get_db_connection()

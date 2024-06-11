@@ -11,15 +11,9 @@ class Author:
     def get_name(self):
         return self._name
     
-    def set_name(self, name):
-        if type(name) != str:
-            print("Name must be of type str")
-            return 
-        if len(name) == 0:
-            print("Name must be longer than 0 characters")
-            return 
+    def set_name(self, name: str):
+        assert len(name)>= 0
         if hasattr(self, '_name'):
-            print("Name cannot be changed after author is instantiated")
             return 
         self._name = name
     name = property(get_name, set_name)
@@ -29,7 +23,6 @@ class Author:
     
     def set_id(self, id):
           if type(id) != int:
-            print("ID must be of type int")
             return  
           self._id = id
 
@@ -45,10 +38,10 @@ class Author:
         ''', (name,))
         
         conn.commit()
-        author_id = cursor.lastrowid
+        authors_id = cursor.lastrowid
         conn.close()
         
-        return cls(author_id, name)
+        return cls(authors_id, name)
 
     @classmethod
     def get_by_id(cls, author_id):
@@ -77,10 +70,10 @@ class Author:
             WHERE authors.id = ?
         ''', (self.id,))
         
-        articles_rows = cursor.fetchall()
+        articles = cursor.fetchall()
         conn.close()
 
-        return articles_rows
+        return articles
     def magazines(self):
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -92,7 +85,7 @@ class Author:
         WHERE articles.author_id = ?
     ''', (self.id,))
         
-        magazine_rows = cursor.fetchall()
+        magazines = cursor.fetchall()
         conn.close()
 
-        return magazine_rows
+        return magazines
